@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UniversalChess.Model;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -15,11 +16,10 @@ namespace UniversalChess.UI.Controls
 
         protected override Style SelectStyleCore(object item, DependencyObject container)
         {
-            ChessSquare chessSquare = item as ChessSquare;
-            if (chessSquare != null)
+            if (item is Square square)
             {
-                int row = chessSquare.Id / 8;
-                int col = chessSquare.Id % 8;
+                int row = square.Id / 8;
+                int col = square.Id % 8;
 
                 return (row + col) % 2 == 0 ? LightSquareStyle : DarkSquareStyle;
             }

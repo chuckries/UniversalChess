@@ -3,48 +3,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:UniversalChess.UI.Controls">
 
-    <SolidColorBrush x:Key="LightColor" Color="Beige"/>
-    <SolidColorBrush x:Key="DarkColor" Color="DarkGreen"/>
-
-    <StaticResource x:Key="LightSquareBackground" ResourceKey="LightColor"/>
-    <StaticResource x:Key="LightSquareForeground" ResourceKey="DarkColor"/>
-    <StaticResource x:Key="DarkSquareBackground" ResourceKey="DarkColor"/>
-    <StaticResource x:Key="DarkSquareForeground" ResourceKey="LightColor"/>
-
-    <Style TargetType="local:ChessBoardItem" x:Key="DefaultLightSquareStyle">
-        <Setter Property="Background" Value="{ThemeResource LightSquareBackground}"/>
-        <Setter Property="Foreground" Value="{ThemeResource LightSquareForeground}"/>
-    </Style>
-
-    <Style TargetType="local:ChessBoardItem" x:Key="DefaultDarkSquareStyle">
-        <Setter Property="Background" Value="{ThemeResource DarkSquareBackground}"/>
-        <Setter Property="Foreground" Value="{ThemeResource DarkSquareForeground}"/>
-    </Style>
-
-    <StaticResource x:Key="LightSquareStyle" ResourceKey="DefaultLightSquareStyle"/>
-    <StaticResource x:Key="DarkSquareStyle" ResourceKey="DefaultDarkSquareStyle"/>
+    <SolidColorBrush x:Key="ChessBoardLightColorBrush" Color="White"/>
+    <SolidColorBrush x:Key="ChessBoardDarkColorBrush" Color="DarkGray"/>
+    <SolidColorBrush x:Key="ChessBoardHighlightBrush" Color="Yellow" Opacity="0.75"/>
 
     <local:ChessPieceToGlyphConverter x:Key="ChessPieceToGlyphConverter" />
     <local:IdToRankFileConverter x:Key="IdRankFileConverter"/>
 
-    <DataTemplate x:Key="ChessBoardItemDataTemplate">
-        <Grid>
-            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top"
-                       Text="{Binding Id, Converter={StaticResource IdRankFileConverter}, ConverterParameter=rank}"/>
-            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                       Text="{Binding Id, Converter={StaticResource IdRankFileConverter}, ConverterParameter=file}"/>
-            <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <FontIcon Foreground="Black"
-                      FontFamily="Arial"
-                      Glyph="{Binding Piece, Converter={StaticResource ChessPieceToGlyphConverter}}"
-                      HorizontalAlignment="Stretch" 
-                      VerticalAlignment="Stretch"/>
-            </Viewbox>
-        </Grid>
-    </DataTemplate>
-
     <Style TargetType="local:ChessBoard">
-        <Setter Property="CanDragItems" Value="True"/>
+        <Setter Property="BorderBrush" Value="{ThemeResource ChessBoardDarkColorBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
@@ -57,7 +25,29 @@
                 <local:ChessBoardItemStyleSelector LightSquareStyle="{StaticResource LightChessBoardItemStyle}" DarkSquareStyle="{StaticResource DarkChessBoardItemStyle}"/>
             </Setter.Value>
         </Setter>
-        <Setter Property="ItemTemplate" Value="{StaticResource ChessBoardItemDataTemplate}"/>
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <FontIcon Foreground="Black"
+                                  FontFamily="Consolas"
+                                  Glyph="{Binding Converter={StaticResource ChessPieceToGlyphConverter}}"
+                                  HorizontalAlignment="Center" 
+                                  VerticalAlignment="Center"/>
+                    </Viewbox>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:ChessBoard">
+                    <Grid BorderBrush="{TemplateBinding BorderBrush}"
+                          BorderThickness="{TemplateBinding BorderThickness}">
+                        <ItemsPresenter />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="local:ChessBoardItem" x:Key="BaseChessBoardItemStyle">
@@ -65,9 +55,31 @@
             <Setter.Value>
                 <ControlTemplate TargetType="local:ChessBoardItem">
                     <Grid Background="{TemplateBinding Background}">
-                        <ContentPresenter Background="Transparent" 
-                                          Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="DragStates">
+                                <VisualState x:Name="NotDragging"/>
+                                <VisualState x:Name="DragTarget">
+                                    <Storyboard>
+                                        <DoubleAnimation To="1" Storyboard.TargetName="Background" Storyboard.TargetProperty="Opacity" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Rectangle x:Name="Background"
+                                   Fill="{ThemeResource ChessBoardHighlightBrush}" 
+                                   Opacity="0"/>
+                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top"
+                                   Text="{Binding Id, Converter={StaticResource IdRankFileConverter}, ConverterParameter=rank}"/>
+                        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                   Text="{Binding Id, Converter={StaticResource IdRankFileConverter}, ConverterParameter=file}"/>
+                        <ContentControl x:Name="ContentPresenter"
+                                        Background="Transparent" 
+                                        Content="{Binding Piece}"
+                                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        HorizontalContentAlignment="Stretch"
+                                        VerticalContentAlignment="Stretch"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -75,13 +87,13 @@
     </Style>
 
     <Style TargetType="local:ChessBoardItem" x:Key="LightChessBoardItemStyle" BasedOn="{StaticResource BaseChessBoardItemStyle}">
-        <Setter Property="Background" Value="{ThemeResource LightColor}"/>
-        <Setter Property="Foreground" Value="{ThemeResource DarkColor}"/>
+        <Setter Property="Background" Value="{ThemeResource ChessBoardLightColorBrush}"/>
+        <Setter Property="Foreground" Value="{ThemeResource ChessBoardDarkColorBrush}"/>
     </Style>
 
     <Style TargetType="local:ChessBoardItem" x:Key="DarkChessBoardItemStyle" BasedOn="{StaticResource BaseChessBoardItemStyle}">
-        <Setter Property="Background" Value="{ThemeResource DarkColor}"/>
-        <Setter Property="Foreground" Value="{ThemeResource LightColor}"/>
+        <Setter Property="Background" Value="{ThemeResource ChessBoardDarkColorBrush}"/>
+        <Setter Property="Foreground" Value="{ThemeResource ChessBoardLightColorBrush}"/>
     </Style>
 
 </ResourceDictionary>

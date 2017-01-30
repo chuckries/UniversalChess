@@ -14,11 +14,26 @@ using Windows.UI.Xaml.Media;
 
 namespace UniversalChess.UI.Controls
 {
-    public sealed class ChessBoardItem : ListViewItem
+    [TemplatePart(Name = ContentPresetner_PART, Type = typeof(ContentControl))]
+    public sealed class ChessBoardItem : ContentControl
     {
+        private ChessBoard ChessBoard { get { return (ChessBoard)ItemsControl.ItemsControlFromItemContainer(this); } }
+
+        public FrameworkElement DragElement { get { return _contentPresener; } }
+
         public ChessBoardItem()
         {
             this.DefaultStyleKey = typeof(ChessBoardItem);
         }
+
+        protected override void OnApplyTemplate()
+        {
+            _contentPresener = (ContentControl)GetTemplateChild(ContentPresetner_PART);
+
+            base.OnApplyTemplate();
+        }
+
+        private const string ContentPresetner_PART = "ContentPresenter";
+        private ContentControl _contentPresener;
     }
 }

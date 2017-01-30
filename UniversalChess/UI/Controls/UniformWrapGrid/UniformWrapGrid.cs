@@ -38,15 +38,30 @@ namespace UniversalChess.UI.Controls
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            double childWidth = availableSize.Width / Columns;
-            double childHeight = availableSize.Height / Rows;
+            Size size = availableSize;
+            if (availableSize.Width == double.PositiveInfinity && availableSize.Height == double.PositiveInfinity)
+            {
+                size.Width = 100;
+                size.Height = 100;
+            }
+            else if (availableSize.Width == double.PositiveInfinity)
+            {
+                size.Width = size.Height;
+            }
+            else if (availableSize.Height == double.PositiveInfinity)
+            {
+                size.Height = size.Width;
+            }
+
+            double childWidth = size.Width / Columns;
+            double childHeight = size.Height / Rows;
 
             foreach (UIElement child in Children)
             {
                 child.Measure(new Size(childWidth, childHeight));
             }
 
-            return availableSize;
+            return size;
         }
 
         protected override Size ArrangeOverride(Size finalSize)

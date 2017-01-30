@@ -111,13 +111,14 @@
     <Compile Include="Model\Piece.cs" />
     <Compile Include="Model\PieceColor.cs" />
     <Compile Include="Model\PieceType.cs" />
+    <Compile Include="Model\Square.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\Controls\ChessBoard\ChessBoard.cs" />
+    <Compile Include="UI\Controls\ChessBoard\ChessBoard.Properties.cs" />
     <Compile Include="UI\Controls\ChessBoard\ChessBoardItem.cs" />
     <Compile Include="UI\Controls\ChessBoard\Converters\ChessPieceToGlyphConverter.cs" />
     <Compile Include="UI\Controls\ChessBoard\Converters\IdToRankFileConverter.cs" />
     <Compile Include="UI\Controls\ChessBoard\Selectors\ChessBoardItemStyleSelector.cs" />
-    <Compile Include="UI\Controls\ChessBoard\ViewModels\ChessSquare.cs" />
     <Compile Include="UI\Controls\UniformWrapGrid\UniformWrapGrid.cs" />
     <EmbeddedResource Include="Properties\UniversalChess.rd.xml" />
   </ItemGroup>
@@ -133,9 +134,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UI\Converters\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

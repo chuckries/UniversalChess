@@ -9,14 +9,16 @@
     mc:Ignorable="d">
 
     <Page.Resources>
+        <local:OrientationRadioConverter x:Key="OrientationRadioConverter"/>
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <chess:ChessBoard Name="chessBoard">
-            <chess:ChessBoard.Resources>
-                <Color x:Key="DarkColor">Blue</Color>
-            </chess:ChessBoard.Resources>
-        </chess:ChessBoard>
-        <Button Click="Button_Click"/>
+        <StackPanel HorizontalAlignment="Center">
+            <chess:ChessBoard x:Name="TheChessBoard" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Flip Board" Click="FlipBoardButton_Click"/>
+                <ToggleSwitch Header="Orientation" OffContent="White" OnContent="Black" IsOn="{x:Bind TheChessBoard.Orientation, Mode=TwoWay, Converter={StaticResource OrientationRadioConverter}}"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Page>

@@ -6,16 +6,63 @@ using System.Threading.Tasks;
 
 namespace UniversalChess.Model
 {
-    class Piece
+    public abstract class Piece
     {
-        public readonly PieceType Type;
+        public PieceType Type { get; protected set; }
+        public PieceColor Color { get; protected set; }
 
-        public readonly PieceColor Color;
-
-        public Piece(PieceType type, PieceColor color)
+        public Piece(PieceColor color)
         {
-            Type = type;
             Color = color;
         }
     }
+
+    public class Pawn : Piece
+    {
+        public Pawn(PieceColor color) : base(color)
+        {
+            Type = PieceType.Pawn;
+        }
+    }
+
+    public class Knight : Piece
+    {
+        public Knight(PieceColor color) : base(color)
+        {
+            Type = PieceType.Knight;
+        }
+    }
+
+    public class Bishop : Piece
+    {
+        public Bishop(PieceColor color) : base(color)
+        {
+            Type = PieceType.Bishop;
+        }
+    }
+
+    public class Rook : Piece
+    {
+        public Rook(PieceColor color) : base(color)
+        {
+            Type = PieceType.Rook;
+        }
+    }
+
+    public class Queen : Piece
+    {
+        public Queen(PieceColor color) : base(color)
+        {
+            Type = PieceType.Queen;
+        }
+    }
+
+    public class King : Piece
+    {
+        public King(PieceColor color) : base(color)
+        {
+            Type = PieceType.King;
+        }
+    }
+
 }

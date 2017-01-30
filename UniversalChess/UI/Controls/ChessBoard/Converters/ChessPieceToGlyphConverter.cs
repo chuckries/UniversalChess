@@ -12,8 +12,7 @@ namespace UniversalChess.UI.Controls
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            Piece piece = value as Piece;
-            if (piece != null)
+            if (value is Piece piece)
             {
                 if (piece.Color == PieceColor.White)
                 {
