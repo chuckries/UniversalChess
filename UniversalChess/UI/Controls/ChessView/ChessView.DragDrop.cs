@@ -8,6 +8,7 @@ using Windows.Foundation;
 using Windows.Graphics.Imaging;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace UniversalChess.UI.Controls
@@ -15,25 +16,68 @@ namespace UniversalChess.UI.Controls
     public partial class ChessView
     {
         private ChessViewItem _draggedItem;
+        private ChessViewItem _selectedItem;
         private ChessViewItem DraggedItem
         {
             get { return _draggedItem; }
             set
             {
-                if (value == null)
+                if (_draggedItem != value)
                 {
+                    if (value != null)
+                    {
+                        VisualStateManager.GoToState(value, "Dragging", true);
+                    }
                     if (_draggedItem != null)
                     {
-                        VisualStateManager.GoToState(_draggedItem, "NotSelected", true);
                         VisualStateManager.GoToState(_draggedItem, "NotDragging", true);
+                    }
+                    _draggedItem = value;
+                    SelectedItem = value;
+                }
+            }
+        }
+
+        private ChessViewItem SelectedItem
+        {
+            get { return _selectedItem; }
+            set
+            {
+                if (_selectedItem != value)
+                {
+                    if (value != null)
+                    {
+                        VisualStateManager.GoToState(value, "Selected", true);
+                    }
+                    if (_selectedItem != null)
+                    {
+                        VisualStateManager.GoToState(_selectedItem, "NotSelected", true);
+                    }
+                    _selectedItem = value;
+                }
+            }
+        }
+
+        private void Item_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            if (sender is ChessViewItem item)
+            {
+                if (SelectedItem == null)
+                {
+                    if (Position[item.Id] != null)
+                    {
+                        item.CapturePointer(e.Pointer);
+                        SelectedItem = item;
                     }
                 }
                 else
                 {
-                    VisualStateManager.GoToState(value, "Selected", true);
-                    VisualStateManager.GoToState(value, "Dragging", true);
+                    if (SelectedItem != item)
+                    {
+                        Position = Position.MakeMove(SelectedItem.Id, item.Id);
+                    }
+                    SelectedItem = null;
                 }
-                _draggedItem = value;
             }
         }
 
@@ -134,10 +178,7 @@ namespace UniversalChess.UI.Controls
                 if (item != DraggedItem)
                 {
                     VisualStateManager.GoToState(item, "NotDragging", true);
-                    Model.Position position = new Model.Position(Position);
-                    position[item.Id] = DraggedItem.Piece;
-                    position[DraggedItem.Id] = null;
-                    Position = position;
+                    Position = Position.MakeMove(_draggedItem.Id, item.Id);
                     e.AcceptedOperation = DataPackageOperation.Move;
                 }
             }

@@ -22,7 +22,7 @@ namespace UniversalChess.UI.Controls
             for (int i = 0; i < _containers.Length; i++)
             {
                 ChessViewItem item = new ChessViewItem(i);
-                item.Tapped += Item_Tapped;
+                item.PointerPressed += Item_PointerPressed;
                 item.DragStarting += Item_DragStarting;
                 item.DropCompleted += Item_DropCompleted;
                 item.DragEnter += Item_DragEnter;
@@ -31,36 +31,6 @@ namespace UniversalChess.UI.Controls
                 item.Drop += Item_Drop;
                 item.AllowDrop = true;
                 _containers[i] = item;
-            }
-        }
-
-        private ChessViewItem _selectedItem;
-        private void Item_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            if (sender is ChessViewItem tappedItem)
-            {
-                tappedItem.Focus(FocusState.Programmatic);
-
-                if (tappedItem.Piece == null)
-                {
-                    return;
-                }
-                if (_selectedItem == tappedItem)
-                {
-                    VisualStateManager.GoToState(tappedItem, "NotSelected", true);
-                    _selectedItem = null;
-                }
-                else
-                {
-                    if (_selectedItem != null)
-                    {
-                        VisualStateManager.GoToState(_selectedItem, "NotSelected", true);
-                    }
-                    VisualStateManager.GoToState(tappedItem, "Selected", true);
-                    _selectedItem = tappedItem;
-                }
-
-                e.Handled = true;
             }
         }
 

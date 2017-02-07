@@ -105,6 +105,21 @@ namespace UniversalChess.Model
             return builder.ToString();
         }
 
+        // Does not modify this object, returns a new position
+        public Position MakeMove(int sourceId, int destId)
+        {
+            Piece piece = this[sourceId];
+            if (piece != null)
+            {
+                Position newPosition = new Position(this);
+                newPosition[destId] = this[sourceId];
+                newPosition[sourceId] = null;
+                return newPosition;
+            }
+
+            return this;
+        }
+
         public static Position Empty { get { return new Position(); } }
         public static Position Starting { get { return new Position("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"); } }
         public static Position RuyLopez { get { return new Position("r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R"); } }

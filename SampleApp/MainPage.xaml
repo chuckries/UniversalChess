@@ -19,7 +19,7 @@
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel HorizontalAlignment="Center">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid Padding="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -39,12 +39,17 @@
                     <SolidColorBrush Color="{Binding ElementName=Colors, Path=SelectedValue, TargetNullValue=DarkGray}"/>
                 </chess:ChessView.DarkBrush>
             </chess:ChessView>
-            <StackPanel Orientation="Horizontal">
+            <ListView SelectionMode="None" Padding="4">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsStackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
                 <ToggleSwitch Header="Orientation"
                               OffContent="White"
                               OnContent="Black"
                               IsOn="{x:Bind TheChessView.Orientation, Mode=TwoWay, Converter={StaticResource OrientationRadioConverter}}"/>
-                <CheckBox Content="Coordinates Visible" IsChecked="{x:Bind TheChessView.CoordinateVisibility, Mode=TwoWay, Converter={StaticResource VisibilityBoolConverter}}"/>
+                <CheckBox Content="Coordinates" IsChecked="{x:Bind TheChessView.CoordinateVisibility, Mode=TwoWay, Converter={StaticResource VisibilityBoolConverter}}"/>
                 <ComboBox x:Name="Colors"
                           Header="Dark Color"
                           ItemsSource="{x:Bind ColorList}"
@@ -65,7 +70,7 @@
                     <Button Content="Starting" Click="Button_Click" Tag="Starting" HorizontalAlignment="Stretch"/>
                     <Button Content="Ruy Lopez" Click="Button_Click" Tag="RuyLopez" HorizontalAlignment="Stretch"/>
                 </StackPanel>
-            </StackPanel>
+            </ListView>
         </StackPanel>
     </Grid>
 </Page>
