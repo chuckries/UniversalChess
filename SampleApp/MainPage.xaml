@@ -4,20 +4,67 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:SampleApp"
     xmlns:chess="using:UniversalChess.UI.Controls"
+    xmlns:chessui="using:UniversalChess.UI"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
     <Page.Resources>
         <local:OrientationRadioConverter x:Key="OrientationRadioConverter"/>
+        <chessui:VisibilityToBoolConverter x:Key="VisibilityBoolConverter"/>
+
+        <Style TargetType="chess:ChessViewItem">
+            <Setter Property="FontFamily" Value="Consolas"/>
+        </Style>
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <StackPanel HorizontalAlignment="Center">
-            <chess:ChessBoard x:Name="TheChessBoard" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <Grid Padding="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Position:" VerticalAlignment="Center"/>
+                <TextBox Grid.Column="1" Text="{x:Bind TheChessView.Position, Mode=OneWay}" Margin="10,0,0,0"/>
+            </Grid>
+            <chess:ChessView x:Name="TheChessView"
+                             Width="600"
+                             Height="600"
+                             BorderBrush="{Binding DarkBrush, RelativeSource={RelativeSource Self}}"
+                             Tapped="TheChessView_Tapped"
+                             CanDrag="True"
+                             Loaded="TheChessView_Loaded">
+                <chess:ChessView.DarkBrush>
+                    <SolidColorBrush Color="{Binding ElementName=Colors, Path=SelectedValue, TargetNullValue=DarkGray}"/>
+                </chess:ChessView.DarkBrush>
+            </chess:ChessView>
             <StackPanel Orientation="Horizontal">
-                <Button Content="Flip Board" Click="FlipBoardButton_Click"/>
-                <ToggleSwitch Header="Orientation" OffContent="White" OnContent="Black" IsOn="{x:Bind TheChessBoard.Orientation, Mode=TwoWay, Converter={StaticResource OrientationRadioConverter}}"/>
+                <ToggleSwitch Header="Orientation"
+                              OffContent="White"
+                              OnContent="Black"
+                              IsOn="{x:Bind TheChessView.Orientation, Mode=TwoWay, Converter={StaticResource OrientationRadioConverter}}"/>
+                <CheckBox Content="Coordinates Visible" IsChecked="{x:Bind TheChessView.CoordinateVisibility, Mode=TwoWay, Converter={StaticResource VisibilityBoolConverter}}"/>
+                <ComboBox x:Name="Colors"
+                          Header="Dark Color"
+                          ItemsSource="{x:Bind ColorList}"
+                          SelectedValuePath="Item2"
+                          Margin="20,0,0,0">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Item1}">
+                                <TextBlock.Foreground>
+                                    <SolidColorBrush Color="{Binding Item2}"/>
+                                </TextBlock.Foreground>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <StackPanel>
+                    <Button Content="Empty" Click="Button_Click" Tag="Empty" HorizontalAlignment="Stretch"/>
+                    <Button Content="Starting" Click="Button_Click" Tag="Starting" HorizontalAlignment="Stretch"/>
+                    <Button Content="Ruy Lopez" Click="Button_Click" Tag="RuyLopez" HorizontalAlignment="Stretch"/>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -15,6 +15,11 @@ namespace UniversalChess.Model
         {
             Color = color;
         }
+
+        public override string ToString()
+        {
+            return Color == PieceColor.White ? "W" : "B";
+        }
     }
 
     public class Pawn : Piece
@@ -22,6 +27,11 @@ namespace UniversalChess.Model
         public Pawn(PieceColor color) : base(color)
         {
             Type = PieceType.Pawn;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + "P";
         }
     }
 
@@ -31,6 +41,11 @@ namespace UniversalChess.Model
         {
             Type = PieceType.Knight;
         }
+
+        public override string ToString()
+        {
+            return base.ToString() + "N";
+        }
     }
 
     public class Bishop : Piece
@@ -38,6 +53,11 @@ namespace UniversalChess.Model
         public Bishop(PieceColor color) : base(color)
         {
             Type = PieceType.Bishop;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + "B";
         }
     }
 
@@ -47,6 +67,11 @@ namespace UniversalChess.Model
         {
             Type = PieceType.Rook;
         }
+
+        public override string ToString()
+        {
+            return base.ToString() + "R";
+        }
     }
 
     public class Queen : Piece
@@ -55,6 +80,11 @@ namespace UniversalChess.Model
         {
             Type = PieceType.Queen;
         }
+
+        public override string ToString()
+        {
+            return base.ToString() + "Q";
+        }
     }
 
     public class King : Piece
@@ -62,6 +92,11 @@ namespace UniversalChess.Model
         public King(PieceColor color) : base(color)
         {
             Type = PieceType.King;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + "K";
         }
     }
 

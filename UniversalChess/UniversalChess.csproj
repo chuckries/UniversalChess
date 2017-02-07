@@ -111,6 +111,7 @@
     <Compile Include="Model\Piece.cs" />
     <Compile Include="Model\PieceColor.cs" />
     <Compile Include="Model\PieceType.cs" />
+    <Compile Include="Model\Position.cs" />
     <Compile Include="Model\Square.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\Controls\ChessBoard\ChessBoard.cs" />
@@ -119,7 +120,14 @@
     <Compile Include="UI\Controls\ChessBoard\Converters\ChessPieceToGlyphConverter.cs" />
     <Compile Include="UI\Controls\ChessBoard\Converters\IdToRankFileConverter.cs" />
     <Compile Include="UI\Controls\ChessBoard\Selectors\ChessBoardItemStyleSelector.cs" />
+    <Compile Include="UI\Controls\ChessView\ChessView.cs" />
+    <Compile Include="UI\Controls\ChessView\ChessView.DragDrop.cs" />
+    <Compile Include="UI\Controls\ChessView\ChessView.Keyboard.cs" />
+    <Compile Include="UI\Controls\ChessView\ChessView.Properties.cs" />
+    <Compile Include="UI\Controls\ChessView\ChessViewItem.cs" />
+    <Compile Include="UI\Controls\ChessView\ChessViewItem.Properties.cs" />
     <Compile Include="UI\Controls\UniformWrapGrid\UniformWrapGrid.cs" />
+    <Compile Include="UI\VisibilityToBoolConverter.cs" />
     <EmbeddedResource Include="Properties\UniversalChess.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +139,11 @@
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="UI\Controls\ChessView\ChessView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
   </ItemGroup>

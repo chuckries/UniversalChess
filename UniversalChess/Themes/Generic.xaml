@@ -3,5 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="ms-appx:///UniversalChess/UI/Controls/ChessBoard/ChessBoard.xaml" />
+        <ResourceDictionary Source="ms-appx:///UniversalChess/UI/Controls/ChessView/ChessView.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
